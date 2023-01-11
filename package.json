@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "fastify-cerbos",
+  "version": "0.0.1",
+  "description": "Cerbos plugin for Fastify",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard | snazzy && tap test/*test.js"
+  },
+  "keywords": [
+    "fastify",
+    "cerbos",
+    "plugin"
+  ],
+  "author": "Marco Piraccini <marco.piraccini@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@cerbos/core": "^0.8.1",
+    "@cerbos/grpc": "^0.8.1",
+    "@cerbos/http": "^0.8.1",
+    "fastify": "^4.11.0",
+    "fastify-plugin": "^4.4.0"
+  },
+  "devDependencies": {
+    "dockerode": "^3.3.4",
+    "snazzy": "^9.0.0",
+    "standard": "^17.0.0",
+    "tap": "^16.3.3",
+    "undici": "^5.14.0"
+  }
+}
