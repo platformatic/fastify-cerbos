@@ -5,7 +5,8 @@
   "description": "Cerbos plugin for Fastify",
   "main": "index.js",
   "scripts": {
-    "test": "standard | snazzy && tap test/*test.js"
+    "test": "standard | snazzy && tap test/*test.js",
+    "lint": "standard"
   },
   "keywords": [
     "fastify",
