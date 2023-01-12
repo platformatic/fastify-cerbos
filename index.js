@@ -11,7 +11,7 @@ const defaultOptions = {
   adminCredentials: null,
   tls: false,
   getPrincipal: user => {
-    const { id, roles, ...rest } = user
+    const { id = 'anonymous', roles = ['anonymous'], ...rest } = user
     return {
       id,
       roles,
@@ -39,7 +39,6 @@ function fastifyCerbos (fastify, options, done) {
     useGRPC
       ? `${host}:${port}`
       : `${tls ? 'https' : 'http'}://${host}:${port}`
-  console.log(`Initializing Cerbos client with ${cerbosInitString}`)
   const cerbosClient = new Cerbos(cerbosInitString, { adminCredentials, tls })
 
   async function isAllowed (resource, action) {
