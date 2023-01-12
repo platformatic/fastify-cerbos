@@ -1,4 +1,3 @@
-
 # Cerbos Fastify plugin
 
 This plugin provides a [Fastify](https://www.fastify.io/) plugin for [Cerbos](https://cerbos.dev).
@@ -15,10 +14,11 @@ It assumes the `request` has been decorated with a `user` object. The `user` obj
     attr: rest
   }
 }
+```
 
 This function can be overridden by passing a `getPrincipal` function to the plugin options.
 If no `user` object is found in the request, the principal is `anonymous` principal:
-```
+```js
   { 
     id: 'anonymous', 
     roles: ['anonymous'] 
@@ -84,5 +84,4 @@ Start Cerbos server with:
 ```bash
 docker-compose up -d 
 ```
-
 
