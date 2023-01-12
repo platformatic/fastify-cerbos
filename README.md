@@ -2,11 +2,13 @@
 # Cerbos Fastify plugin
 
 This plugin provides a [Fastify](https://www.fastify.io/) plugin for [Cerbos](https://cerbos.dev).
+Currently, this supports only `isAllowed` exposed by a Fastify request decorator, which returns a Promise that resolves to a boolean.
+
 It assumes the `request` has been decorated with a `user` object. The `user` object is used to extract the principal using this `getPrincipal` function: 
 
 ```js
   getPrincipal: user => {
-    const { id, roles, ...rest } = user
+    const { id = 'anonymous', roles = ['anonymous'], ...rest } = user
     return {
     id,
     roles, 
@@ -23,6 +25,7 @@ If no `user` object is found in the request, the principal is `anonymous` princi
   }
 
 ```
+These values are also set in case `user` as no `id` or `roles` properties.
 
 ## Usage
 
@@ -60,6 +63,17 @@ app.get('/', async function (request, reply) {
 await app.listen()
 
 ```
+
+## Options
+
+The plugin accepts the following options:
+
+- `host` - Cerbos server host. Default: `127.0.0.1`
+- `port` - Cerbos server port. Default: `3593`
+- `useGRPC` - Use gRPC to connect to Cerbos server. Default: `true`
+- `getPrincipal` - Function to extract the principal from the request. Default: `see above`
+- `tls` - TLS options for gRPC/HTTP connection. This object is passed to [Cerbos Client Object](https://github.com/cerbos/cerbos-sdk-javascript/blob/main/docs/core.client.md)
+
 
 ## Run Tests
 

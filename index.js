@@ -1,4 +1,3 @@
-
 const fp = require('fastify-plugin')
 
 // We must define at least one role, otherwise Cerbos will throw an error
@@ -8,7 +7,6 @@ const defaultOptions = {
   useGRPC: true,
   port: 3593,
   host: 'localhost',
-  adminCredentials: null,
   tls: false,
   getPrincipal: user => {
     const { id = 'anonymous', roles = ['anonymous'], ...rest } = user
@@ -26,7 +24,6 @@ function fastifyCerbos (fastify, options, done) {
     useGRPC,
     port,
     host,
-    adminCredentials,
     tls,
     getPrincipal
   } = _options
@@ -39,7 +36,7 @@ function fastifyCerbos (fastify, options, done) {
     useGRPC
       ? `${host}:${port}`
       : `${tls ? 'https' : 'http'}://${host}:${port}`
-  const cerbosClient = new Cerbos(cerbosInitString, { adminCredentials, tls })
+  const cerbosClient = new Cerbos(cerbosInitString, { tls })
 
   async function isAllowed (resource, action) {
     const principal = this.user ? getPrincipal(this.user) : anonymousPrincipal
