@@ -1,3 +1,4 @@
+
 const fp = require('fastify-plugin')
 
 // We must define at least one role, otherwise Cerbos will throw an error
@@ -9,9 +10,14 @@ const defaultOptions = {
   host: 'localhost',
   adminCredentials: null,
   tls: false,
-  getPrincipal: () => anonymousPrincipal,
-  enableHook: false,
-  getResourceAndAction: null // used id hook is enabled. Given a fastify request, return a resource and an action
+  getPrincipal: user => {
+    const { id, roles, ...rest } = user
+    return {
+      id,
+      roles,
+      attr: rest
+    }
+  }
 }
 
 function fastifyCerbos (fastify, options, done) {
@@ -22,51 +28,27 @@ function fastifyCerbos (fastify, options, done) {
     host,
     adminCredentials,
     tls,
-    getPrincipal,
-    enableHook,
-    getAuthorizationRequest
+    getPrincipal
   } = _options
 
-  if (enableHook) {
-    if (!getAuthorizationRequest) {
-      return done(new Error('You need to provide a getAuthorizationRequest function if you enable the hook'))
-    }
-
-    if (typeof getAuthorizationRequest !== 'function') {
-      return done(new Error('getAuthorizationRequest must be a function'))
-    }
-  }
-
-  if (getPrincipal && typeof getPrincipal !== 'function') {
-    return done(new Error('getPrincipal must be a function'))
-  }
-
   const Cerbos = useGRPC ? require('@cerbos/grpc').GRPC : require('@cerbos/http').HTTP
-  const cerbosClient = new Cerbos(`http://${host}:${port}`, { adminCredentials, tls })
 
-  // Decorator for programmatic use
+  // we ignore here because to cover the tls case we should start another cerbos instance
+  /* istanbul ignore next */
+  const cerbosInitString =
+    useGRPC
+      ? `${host}:${port}`
+      : `${tls ? 'https' : 'http'}://${host}:${port}`
+  console.log(`Initializing Cerbos client with ${cerbosInitString}`)
+  const cerbosClient = new Cerbos(cerbosInitString, { adminCredentials, tls })
+
   async function isAllowed (resource, action) {
-    const principal = getPrincipal(this) || anonymousPrincipal
+    const principal = this.user ? getPrincipal(this.user) : anonymousPrincipal
     const isAllowed = await cerbosClient.isAllowed({ principal, resource, action })
     return isAllowed
   }
 
   fastify.decorateRequest('isAllowed', isAllowed)
-
-  // Hook for declarative use.
-  if (enableHook) {
-    fastify.addHook('preHandler', async (request, reply) => {
-      if (!getAuthorizationRequest) {
-        reply.code(500).send(new Error('Resource loader not defined'))
-      }
-      const { resource, action } = getAuthorizationRequest(request)
-      const principal = request.user ? getPrincipal(request.user) : anonymousPrincipal
-      const isAllowed = await cerbosClient.isAllowed({ principal, resource, action })
-      if (!isAllowed) {
-        reply.code(403).send()
-      }
-    })
-  }
   done()
 }
 

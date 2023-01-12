@@ -1,6 +1,28 @@
+
 # Cerbos Fastify plugin
 
 This plugin provides a [Fastify](https://www.fastify.io/) plugin for [Cerbos](https://cerbos.dev).
+It assumes the `request` has been decorated with a `user` object. The `user` object is used to extract the principal using this `getPrincipal` function: 
+
+```js
+  getPrincipal: user => {
+    const { id, roles, ...rest } = user
+    return {
+    id,
+    roles, 
+    attr: rest
+  }
+}
+
+This function can be overridden by passing a `getPrincipal` function to the plugin options.
+If no `user` object is found in the request, the principal is `anonymous` principal:
+```
+  { 
+    id: 'anonymous', 
+    roles: ['anonymous'] 
+  }
+
+```
 
 ## Usage
 
@@ -16,12 +38,6 @@ app.register(fastifyCerbos, {
   host: '127.0.0.1',
   port: 3593,
   useGRPC: true,
-  getPrincipal: request => {
-    const { id, roles } = request.user
-    return {
-    id,
-    roles
-  }
 })
 
 app.get('/', async function (request, reply) {
@@ -30,7 +46,7 @@ app.get('/', async function (request, reply) {
   const resource = {
     id,
     kind: 'post',
-    attributes: {}
+    attr: {}
   }
   
   const allowed = await request.isAllowed(resource, 'modify')
@@ -44,9 +60,6 @@ app.get('/', async function (request, reply) {
 await app.listen()
 
 ```
-
-### Authorization Hook
-[TODO]
 
 ## Run Tests
 

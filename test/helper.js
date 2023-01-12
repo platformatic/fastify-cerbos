@@ -45,8 +45,46 @@ const restartCerbos = async () => {
   }
 }
 
+const setupPolicies = async () => {
+  const resourcePolicy = {
+    policies: [{
+      apiVersion: 'api.cerbos.dev/v1',
+      resourcePolicy: {
+        version: 'default',
+        resource: 'post',
+        rules: [
+          {
+            actions: ['view'],
+            roles: ['*'],
+            condition: {
+              match: {
+                expr: 'request.resource.attr.public == true'
+              }
+            },
+            effect: 'EFFECT_ALLOW'
+          }, {
+            actions: ['delete', 'edit', 'view'],
+            roles: ['admin'],
+            effect: 'EFFECT_ALLOW'
+          }]
+      }
+    }]
+  }
+
+  await request(`http://localhost:${CERBOS_HTTP_PORT}/admin/policy`, {
+    method: 'POST',
+    body: JSON.stringify(resourcePolicy),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Basic ${Buffer.from('cerbos:cerbosAdmin').toString('base64')}`
+    }
+  })
+}
+
 module.exports = {
   restartCerbos,
   CERBOS_HTTP_PORT,
-  CERBOS_GRPC_PORT
+  CERBOS_GRPC_PORT,
+  setupPolicies
 }
