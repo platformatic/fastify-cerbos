@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  cerbos:
+    image: ghcr.io/cerbos/cerbos:latest
+    container_name: cerbos-test
+    command: ["server", "--config=/data/config/config.yaml"]
+    volumes:
+      - ./cerbos:/data
+    ports:
+      - 13592:13592
+      - 13593:13593

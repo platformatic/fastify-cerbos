@@ -1,0 +1,15 @@
+---
+server:
+  httpListenAddr: ":13592"
+  grpcListenAddr: ":13593"
+  playgroundEnabled: true
+  adminAPI:
+    enabled: true
+    adminCredentials:
+      username: cerbos
+      passwordHash: JDJ5JDEwJE5HYnk4cTY3VTE1bFV1NlR2bmp3ME9QOXdXQXFROGtBb2lWREdEY2xXbzR6WnoxYWtSNWNDCgo= #cerbosAdmin
+
+storage:
+  driver: "sqlite3"
+  sqlite3:
+    dsn: ":memory:"
