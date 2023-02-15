@@ -29,11 +29,17 @@ These values are also set in case `user` as no `id` or `roles` properties.
 
 ## Usage
 
-Add the plugin to your Fastify application:
+Install with:
+
+```bash
+npm install fastify-cerbos
+```
+
+Then you can add the plugin to your Fastify application:
 
 ```js
 const Fastify = require('fastify')
-const fastifyCerbos = require('@platformatic/fastify-cerbos')
+const fastifyCerbos = require('fastify-cerbos')
 
 const app = Fastify()
 
