@@ -16,7 +16,7 @@
   "author": "Marco Piraccini <marco.piraccini@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@cerbos/core": "^0.8.1",
+    "@cerbos/core": "^0.9.0",
     "@cerbos/grpc": "^0.8.1",
     "@cerbos/http": "^0.8.1",
     "fastify": "^4.11.0",
