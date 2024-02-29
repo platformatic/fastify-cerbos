@@ -23,7 +23,7 @@
     "fastify-plugin": "^4.5.0"
   },
   "devDependencies": {
-    "dockerode": "^3.3.4",
+    "dockerode": "^4.0.0",
     "snazzy": "^9.0.0",
     "standard": "^17.0.0",
     "tap": "^16.3.4",
