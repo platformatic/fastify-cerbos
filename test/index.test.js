@@ -1,4 +1,6 @@
-const { test, before } = require('tap')
+'use strict'
+
+const { test, before, describe } = require('node:test')
 const Fastify = require('fastify')
 const fastifyCerbos = require('..')
 const { restartCerbos, setupPolicies } = require('./helper')
@@ -8,10 +10,10 @@ before(async () => {
   await setupPolicies()
 })
 
-test('HTTP', async (t) => {
-  test('failed authorization, anonymous principal', async ({ plan, same, teardown }) => {
+describe('HTTP', async (t) => {
+  test('failed authorization, anonymous principal', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -40,12 +42,12 @@ test('HTTP', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 403)
+    t.assert.strictEqual(response.statusCode, 403)
   })
 
-  test('failed authorization, principal from user', async ({ plan, same, teardown }) => {
+  test('failed authorization, principal from user', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -83,12 +85,12 @@ test('HTTP', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 403)
+    t.assert.strictEqual(response.statusCode, 403)
   })
 
-  test('failed authorization, principal from user with no id and roles', async ({ plan, same, teardown }) => {
+  test('failed authorization, principal from user with no id and roles', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -124,12 +126,12 @@ test('HTTP', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 403)
+    t.assert.strictEqual(response.statusCode, 403)
   })
 
-  test('successful authorization', async ({ plan, same, teardown }) => {
+  test('successful authorization', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -167,12 +169,12 @@ test('HTTP', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 200)
+    t.assert.strictEqual(response.statusCode, 200)
   })
 
-  test('successful authorization, custom getPrincipal', async ({ plan, same, teardown }) => {
+  test('successful authorization, custom getPrincipal', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -214,14 +216,14 @@ test('HTTP', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 200)
+    t.assert.strictEqual(response.statusCode, 200)
   })
 })
 
-test('GRPC', async (t) => {
-  test('failed authorization, anonymous principal', async ({ plan, same, teardown }) => {
+describe('GRPC', async (t) => {
+  test('failed authorization, anonymous principal', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -250,12 +252,12 @@ test('GRPC', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 403)
+    t.assert.strictEqual(response.statusCode, 403)
   })
 
-  test('successful authorization', async ({ plan, same, teardown }) => {
+  test('successful authorization', async (t) => {
     const app = Fastify()
-    teardown(app.close.bind(app))
+    t.after(() => app.close())
 
     app.register(fastifyCerbos, {
       host: '127.0.0.1',
@@ -293,6 +295,6 @@ test('GRPC', async (t) => {
       url: '/'
     })
 
-    same(response.statusCode, 200)
+    t.assert.strictEqual(response.statusCode, 200)
   })
 })

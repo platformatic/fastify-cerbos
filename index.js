@@ -1,3 +1,5 @@
+'use strict'
+
 const fp = require('fastify-plugin')
 
 // We must define at least one role, otherwise Cerbos will throw an error
@@ -49,7 +51,7 @@ function fastifyCerbos (fastify, options, done) {
 }
 
 module.exports = fp(fastifyCerbos, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: 'fastify-cerbos'
 })
 
