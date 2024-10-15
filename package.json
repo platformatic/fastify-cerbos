@@ -5,8 +5,8 @@
   "description": "Cerbos plugin for Fastify",
   "main": "index.js",
   "scripts": {
-    "test": "standard | snazzy && tap test/*test.js",
-    "lint": "standard"
+    "test": "eslint && tap test/*test.js",
+    "lint": "eslint --fix"
   },
   "keywords": [
     "fastify",
@@ -19,13 +19,13 @@
     "@cerbos/core": "^0.16.0",
     "@cerbos/grpc": "^0.16.0",
     "@cerbos/http": "^0.17.0",
-    "fastify": "^4.13.0",
-    "fastify-plugin": "^4.5.0"
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.0"
   },
   "devDependencies": {
     "dockerode": "^4.0.0",
-    "snazzy": "^9.0.0",
-    "standard": "^17.0.0",
+    "eslint": "^9.10.0",
+    "neostandard": "^0.11.5",
     "tap": "^16.3.4",
     "undici": "^6.0.0"
   }
