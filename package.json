@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "@cerbos/core": "^0.16.0",
-    "@cerbos/grpc": "^0.16.0",
+    "@cerbos/grpc": "^0.18.0",
     "@cerbos/http": "^0.19.0",
     "fastify": "^5.0.0",
     "fastify-plugin": "^5.0.0"
